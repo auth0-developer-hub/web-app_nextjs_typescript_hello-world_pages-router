@@ -1,3 +1,4 @@
+import { withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Message } from "../../../models/message";
 
@@ -12,4 +13,4 @@ const getProtectedMessage = async (
   res.status(200).json(message);
 };
 
-export default getProtectedMessage;
+export default withApiAuthRequired(getProtectedMessage);

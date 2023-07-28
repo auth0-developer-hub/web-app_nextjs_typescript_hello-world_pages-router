@@ -1,20 +1,18 @@
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { NextPage } from "next";
+import Image from "next/image";
 import React from "react";
 import { CodeSnippet } from "../components/code-snippet";
 import { PageLayout } from "../components/page-layout";
-import { UserProfile } from "../models/user-profile";
-import Image from "next/image";
 
 const Profile: NextPage = () => {
-  const user: UserProfile = {
-    nickname: "Customer",
-    name: "One Customer",
-    picture: "https://cdn.auth0.com/blog/hello-auth0/auth0-user.png",
-    updated_at: "2021-05-04T21:33:09.415Z",
-    email: "customer@example.com",
-    email_verified: false,
-    sub: "auth0|12345678901234567890",
-  };
+  const defaultPicture = "https://cdn.auth0.com/blog/hello-auth0/auth0-user.png";
+  const { user } = useUser();
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <PageLayout>
       <div className="content-layout">
@@ -24,13 +22,17 @@ const Profile: NextPage = () => {
         <div className="content__body">
           <p id="page-description">
             <span>
-              <strong>Only authenticated users should access this page.</strong>
+              You can use the <strong>ID Token</strong> to get the profile
+              information of an authenticated user.
+            </span>
+            <span>
+              <strong>Only authenticated users can access this page.</strong>
             </span>
           </p>
           <div className="profile-grid">
             <div className="profile__header">
               <Image
-                src={user.picture}
+                src={user.picture || defaultPicture}
                 alt="Profile"
                 className="profile__avatar"
                 width={80}
@@ -43,7 +45,7 @@ const Profile: NextPage = () => {
             </div>
             <div className="profile__details">
               <CodeSnippet
-                title="User Profile Object"
+                title="Decoded ID Token"
                 code={JSON.stringify(user, null, 2)}
               />
             </div>

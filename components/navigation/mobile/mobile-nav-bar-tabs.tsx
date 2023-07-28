@@ -1,3 +1,4 @@
+import { useUser } from "@auth0/nextjs-auth0/client";
 import React from "react";
 import { MobileNavBarTab } from "./mobile-nav-bar-tab";
 
@@ -8,6 +9,8 @@ interface MobileNavBarTabsProps {
 export const MobileNavBarTabs: React.FC<MobileNavBarTabsProps> = ({
   handleClick,
 }) => {
+  const { user } = useUser();
+
   return (
     <div className="mobile-nav-bar__tabs">
       <MobileNavBarTab
@@ -20,12 +23,20 @@ export const MobileNavBarTabs: React.FC<MobileNavBarTabsProps> = ({
         label="Public"
         handleClick={handleClick}
       />
-      <MobileNavBarTab
-        path="/protected"
-        label="Protected"
-        handleClick={handleClick}
-      />
-      <MobileNavBarTab path="/admin" label="Admin" handleClick={handleClick} />
+      {user && (
+        <>
+          <MobileNavBarTab
+            path="/protected"
+            label="Protected"
+            handleClick={handleClick}
+          />
+          <MobileNavBarTab
+            path="/admin"
+            label="Admin"
+            handleClick={handleClick}
+          />
+        </>
+      )}
     </div>
   );
 };
