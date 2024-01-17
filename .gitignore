@@ -336,3 +336,9 @@ $RECYCLE.BIN/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# end default
+
+# begin custom
+
+# end custom
